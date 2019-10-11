@@ -29,7 +29,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     serializers_class = UsuarioSerializer
 
 router = routers.DefaulRouter()
-router.register(r'marca', UsuarioViewSet)
+router.register(r'usuario', UsuarioViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
