@@ -19,6 +19,8 @@ from django.urls import path
 from taller.models import *
 from rest_framework import routers, serializers, viewsets
 
+# -------USUARIO------
+
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
@@ -26,10 +28,112 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
-    serializers_class = UsuarioSerializer
+    serializer_class = UsuarioSerializer
 
-router = routers.DefaulRouter()
+# ------------CLIENTE----------
+
+class ClienteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cliente
+        fields = ['nombre','rut','telefono','direccion','correo']
+
+class ClienteViewSet(viewsets.ModelViewSet):
+    queryset = Cliente.objects.all()
+    serializer_class = ClienteSerializer
+
+# -------------------- RESERVA--------------------
+
+class ReservaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reserva
+        fields = ['tipoReserva','fechaReserva','horaReserva','descripcion','cliente']
+
+class ReservaViewSet(viewsets.ModelViewSet):
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer
+
+# ------------------------REPUESTO--------------
+class RepuestoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Repuesto
+        fields = ['nombreRepuestro','stock','precio']
+
+class RepuestoViewSet(viewsets.ModelViewSet):
+    queryset = Repuesto.objects.all()
+    serializer_class = RepuestoSerializer
+
+# -----------------MECANICO-------------------
+
+class MecanicoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mecanico
+        fields = ['nombreMecanico','especializacion']
+
+class MecanicoViewSet(viewsets.ModelViewSet):
+    queryset = Mecanico.objects.all()
+    serializer_class = MecanicoSerializer
+
+# --------Marca------------------
+
+class MarcaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Marca
+        fields = ['nombreMarca']
+
+class MarcaViewSet(viewsets.ModelViewSet):
+    queryset = Marca.objects.all()
+    serializer_class = MarcaSerializer
+
+ # -----------------------Modelo-----------
+
+class ModeloSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Modelo
+        fields = ['nombreModelo','marca']
+
+class ModeloViewSet(viewsets.ModelViewSet):
+    queryset = Modelo.objects.all()
+    serializer_class = ModeloSerializer
+
+# ---------------VEHICULO------------
+
+class VehiculoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vehiculo
+        fields = ['patente','year','modelo']
+
+class VehiculoViewSet(viewsets.ModelViewSet):
+    queryset = Vehiculo.objects.all()
+    serializer_class = VehiculoSerializer
+
+# ------------------ORDENTRABAJO----------------
+
+class OrdenTrabajoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrdenTrabajo
+        fields = ['tipoTrabajo','fechaComienzo',
+                  'fechaTermino','descripcion',
+                  'precio','abono',
+                  'total','usuario',
+                  'cliente','repuesto',
+                  'mecanico','vehiculo']
+
+class OrdenTrabajoViewSet(viewsets.ModelViewSet):
+    queryset = OrdenTrabajo.objects.all()
+    serializer_class = OrdenTrabajoSerializer
+
+# --------------NOMBRE DE RUTA EN LA URL--------------
+
+router = routers.DefaultRouter()
 router.register(r'usuario', UsuarioViewSet)
+router.register(r'cliente', ClienteViewSet)
+router.register(r'reserva', ReservaViewSet)
+router.register(r'repuesto', RepuestoViewSet)
+router.register(r'mecanico', MecanicoViewSet)
+router.register(r'marca', MarcaViewSet)
+router.register(r'modelo', ModeloViewSet)
+router.register(r'vehiculo', VehiculoViewSet)
+router.register(r'ordenTrabajo', OrdenTrabajoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
